@@ -452,7 +452,7 @@ This project is licensed under the **MIT License** — see the [LICENSE](LICENSE
 B.Tech — Artificial Intelligence & Data Science (3rd Year)
 
 - 📧 Email: `abhishek.s_btech23@gsv.ac.in`
-- 🐙 GitHub: [@yourusername](https://github.com/yourusername)
+- 🐙 GitHub: [@MARC-R9T](https://github.com/MARC-R9T)
 
 ---
 
