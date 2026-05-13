@@ -446,7 +446,50 @@ This project is licensed under the **MIT License** — see the [LICENSE](LICENSE
 
 ---
 
-## 👤 Author
+## 👥 Team
+
+This project was built as a team capstone for **AI in Transportation & Logistics** (B.Tech, 6th Semester, AI & Data Science).
+
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/MARC-R9T">
+        <img src="https://github.com/MARC-R9T.png" width="80px" style="border-radius:50%"/><br/>
+        <b>Abhishek S.</b><br/>
+        <sub>Lead Developer</sub><br/>
+        <sub>Backend · ML Models · API · Architecture</sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/teammate2-username">
+        <img src="https://github.com/teammate2-username.png" width="80px" style="border-radius:50%"/><br/>
+        <b>Teammate 2 Name</b><br/>
+        <sub>Role (e.g. Frontend)</sub><br/>
+        <sub>Component / Contribution</sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/teammate3-username">
+        <img src="https://github.com/teammate3-username.png" width="80px" style="border-radius:50%"/><br/>
+        <b>Teammate 3 Name</b><br/>
+        <sub>Role (e.g. Data Pipeline)</sub><br/>
+        <sub>Component / Contribution</sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/teammate4-username">
+        <img src="https://github.com/teammate4-username.png" width="80px" style="border-radius:50%"/><br/>
+        <b>Teammate 4 Name</b><br/>
+        <sub>Role (e.g. Research & Docs)</sub><br/>
+        <sub>Component / Contribution</sub>
+      </a>
+    </td>
+  </tr>
+</table>
+
+---
+
+## 👤 Lead Author
 
 **Abhishek S.**
 B.Tech — Artificial Intelligence & Data Science (3rd Year)
@@ -457,5 +500,5 @@ B.Tech — Artificial Intelligence & Data Science (3rd Year)
 ---
 
 <div align="center">
-<sub>Built with ❤️ for AI in Transportation & Logistics — B.Tech Capstone Project</sub>
+<sub>Built with ❤️ by Team SkyGuard for AI in Transportation & Logistics — B.Tech Capstone Project</sub>
 </div>
