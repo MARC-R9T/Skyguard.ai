@@ -8,7 +8,7 @@
 [![React](https://img.shields.io/badge/React-19.0-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev)
 [![TensorFlow](https://img.shields.io/badge/TensorFlow-2.x-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white)](https://tensorflow.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
-[![Build](https://img.shields.io/github/actions/workflow/status/yourusername/skyguard-ai/ci.yml?style=for-the-badge&label=CI)](/.github/workflows/ci.yml)
+[![Build](https://img.shields.io/github/actions/workflow/status/MARC-R9T/skyguard-ai/ci.yml?style=for-the-badge&label=CI)](/.github/workflows/ci.yml)
 
 <br/>
 
