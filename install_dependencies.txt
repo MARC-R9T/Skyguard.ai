@@ -1,0 +1,65 @@
+===================================================
+ SKYGUARD AI - VS Code Dependency Setup Guide
+===================================================
+
+This file explains how to install all the required dependencies to run the Skyguard AI app in Visual Studio Code on another device.
+
+--- PREREQUISITES ---
+1. Node.js (v18+ recommended) - Download from https://nodejs.org/
+2. Python (v3.8+ recommended) - Download from https://www.python.org/
+3. Visual Studio Code - Download from https://code.visualstudio.com/
+
+--- 1. FRONTEND DEPENDENCIES (Node.js / React) ---
+The frontend uses React, Vite, Three.js, TailwindCSS, etc. 
+
+Open a terminal in VS Code (Terminal -> New Terminal) at the root folder of the project and run:
+
+    npm install
+
+This command automatically reads the `package.json` file and downloads all required packages into a new `node_modules` folder.
+
+--- 2. BACKEND DEPENDENCIES (Python) ---
+The backend uses FastAPI, Streamlit, Pandas, Scikit-Learn, TensorFlow, and Plotly.
+
+--- QUICK START: ALL-IN-ONE PIP COMMAND (Windows PowerShell) ---
+If you are using the default VS Code terminal (PowerShell), you can copy and paste this single line to create the virtual environment, activate it, and install all dependencies at once:
+
+python -m venv venv ; .\venv\Scripts\activate ; pip install fastapi uvicorn streamlit pandas numpy scikit-learn tensorflow keras plotly joblib requests
+
+--- STEP-BY-STEP INSTRUCTIONS ---
+It is highly recommended to create a Python virtual environment to keep these dependencies isolated.
+In the VS Code terminal (still at the root folder), run:
+
+    # 1. Create a virtual environment named "venv"
+    python -m venv venv
+
+    # 2. Activate the virtual environment
+    # For Windows Command Prompt:
+    .\venv\Scripts\activate
+    # For Windows PowerShell:
+    .\venv\Scripts\Activate.ps1
+    # For Mac/Linux:
+    source venv/bin/activate
+
+    # 3. Install the required Python libraries
+    pip install fastapi uvicorn streamlit pandas numpy scikit-learn tensorflow keras plotly joblib requests
+
+--- 3. HOW TO RUN THE APP ---
+To run the project, you'll need two separate terminals in VS Code.
+
+Terminal 1 (Frontend):
+    npm run dev
+    # This will start the Vite frontend server, usually at http://localhost:5173
+
+Terminal 2 (Backend API):
+    # Make sure your virtual environment is activated
+    cd backend
+    uvicorn app:app --reload --port 8000
+    uvicorn app:app --reload --limit-concurrency 40 --limit-max-requests 1000 --timeout-keep-alive 5
+
+    # This starts the backend API at http://localhost:8000
+
+Terminal 3 (Optional - Streamlit Dashboard):
+    # Make sure your virtual environment is activated
+    cd backend
+    streamlit run streamlit_app.py

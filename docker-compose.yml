@@ -1,0 +1,79 @@
+# ============================================================
+#  SkyGuard AI — docker-compose.yml
+#  Orchestrates three services:
+#    1. backend  — FastAPI REST API on port 8000
+#    2. frontend — Vite dev server on port 5173
+#    3. streamlit — Streamlit analytics dashboard on port 8501
+# ============================================================
+
+version: "3.9"
+
+services:
+  # ── Service 1: FastAPI Backend ──────────────────────────────────────────────
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: skyguard-backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - SKYGUARD_PREDICTION_MODE=${SKYGUARD_PREDICTION_MODE:-hybrid}
+      - SKYGUARD_STREAM_CONCURRENCY=${SKYGUARD_STREAM_CONCURRENCY:-6}
+    volumes:
+      # Mount backend/data so model files and CSVs are accessible
+      - ./backend/data:/app/backend/data
+      # Mount external models directory
+      - ./external:/app/external
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+  # ── Service 2: React Frontend (Vite Dev Server) ─────────────────────────────
+  frontend:
+    image: node:20-alpine
+    container_name: skyguard-frontend
+    working_dir: /app
+    ports:
+      - "5173:5173"
+    volumes:
+      # Mount source code for hot-reloading
+      - .:/app
+      # Prevent host node_modules from overwriting container's
+      - /app/node_modules
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+    environment:
+      - VITE_BACKEND_URL=http://backend:8000
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  # ── Service 3: Streamlit Analytics Dashboard ────────────────────────────────
+  streamlit:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: skyguard-streamlit
+    ports:
+      - "8501:8501"
+    env_file:
+      - .env
+    volumes:
+      - ./backend/data:/app/backend/data
+      - ./external:/app/external
+    working_dir: /app/backend
+    command: streamlit run streamlit_app.py --server.port 8501 --server.address 0.0.0.0
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+# ── Shared network ─────────────────────────────────────────────────────────────
+networks:
+  default:
+    name: skyguard-network

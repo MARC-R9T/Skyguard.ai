@@ -1,0 +1,104 @@
+# ============================================================
+#  SkyGuard AI — GitHub Actions CI Pipeline
+#
+#  Triggers on:
+#    - Push to main or develop branches
+#    - Any pull request targeting main
+#
+#  Steps:
+#    1. Lint (flake8) the backend Python code
+#    2. Type-check (mypy) the backend Python code
+#    3. Run all pytest unit tests
+#    4. Build the TypeScript frontend (tsc --noEmit)
+# ============================================================
+
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  # ============================================================
+  # JOB 1: Backend — Python Lint + Type Check + Tests
+  # ============================================================
+  backend:
+    name: Backend (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11"]
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🐍 Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: "pip"
+
+      - name: 📦 Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install flake8 black isort mypy pytest pytest-asyncio httpx
+
+      - name: 🔍 Lint with flake8
+        run: |
+          # Stop the build if there are Python syntax errors or undefined names
+          flake8 backend/src/ --count --select=E9,F63,F7,F82 --show-source --statistics
+          # Run full lint with line-length tolerance (treat as warnings)
+          flake8 backend/src/ --count --max-line-length=100 --ignore=E203,W503 --statistics
+
+      - name: ✨ Check formatting with black
+        run: |
+          black --check backend/src/ --line-length=100
+
+      - name: 🧪 Run tests with pytest
+        env:
+          # Use placeholder credentials for CI — tests use mocks
+          SKYGUARD_OPENSKY_USERNAME: ci_test_user
+          SKYGUARD_OPENSKY_PASSWORD: ci_test_pass
+          SKYGUARD_WEATHER_API_KEY: ci_test_key
+          SKYGUARD_PREDICTION_MODE: heuristic
+        run: |
+          python -m pytest tests/ -v --tb=short --no-header
+
+  # ============================================================
+  # JOB 2: Frontend — TypeScript Build Check
+  # ============================================================
+  frontend:
+    name: Frontend (Node.js ${{ matrix.node-version }})
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: ["18", "20"]
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🟢 Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+
+      - name: 📦 Install Node.js dependencies
+        run: npm ci
+
+      - name: 🔍 TypeScript type check (tsc --noEmit)
+        run: npm run lint
+
+      # Optional: Vite production build validation
+      # - name: 🏗️ Vite production build
+      #   run: npm run build

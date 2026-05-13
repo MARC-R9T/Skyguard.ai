@@ -1,0 +1,5 @@
+{
+  "name": "SkyGuard AI: Integrated Aviation Analytics",
+  "description": "An AI-driven platform for air traffic flow, delay propagation, and conflict detection with interactive 3D visualization.",
+  "requestFramePermissions": []
+}

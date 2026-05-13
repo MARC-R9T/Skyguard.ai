@@ -1,0 +1,125 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "skyguard-ai"
+version = "1.0.0"
+description = "Integrated Aviation Analytics Platform with LSTM Trajectory Prediction, Conflict Detection, and Cascade Delay Forecasting"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [
+    { name = "Abhishek S.", email = "abhishek.s_btech23@gsv.ac.in" }
+]
+requires-python = ">=3.10"
+keywords = [
+    "aviation",
+    "air-traffic",
+    "LSTM",
+    "XGBoost",
+    "FastAPI",
+    "OpenSky",
+    "ADS-B",
+    "conflict-detection",
+    "delay-prediction",
+    "machine-learning",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+]
+dependencies = [
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.34.0",
+    "requests>=2.32.0",
+    "python-dotenv>=1.0.0",
+    "pandas>=2.2.0",
+    "numpy>=1.26.0",
+    "pyarrow>=17.0.0",
+    "tensorflow>=2.17.0",
+    "keras>=3.6.0",
+    "scikit-learn>=1.5.0",
+    "joblib>=1.4.0",
+    "xgboost>=2.1.0",
+    "streamlit>=1.40.0",
+    "plotly>=5.24.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3.0",
+    "pytest-asyncio>=0.24.0",
+    "httpx>=0.28.0",
+    "flake8>=7.1.0",
+    "black>=24.10.0",
+    "isort>=5.13.0",
+    "mypy>=1.13.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/skyguard-ai"
+Repository = "https://github.com/yourusername/skyguard-ai"
+Documentation = "https://github.com/yourusername/skyguard-ai/tree/main/docs"
+"Bug Tracker" = "https://github.com/yourusername/skyguard-ai/issues"
+
+[project.scripts]
+# Run the FastAPI backend from the command line:
+#   skyguard-api
+skyguard-api = "backend.app:app"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["backend*"]
+
+# ------------------------------------------------------------
+# Black code formatter settings
+# ------------------------------------------------------------
+[tool.black]
+line-length = 100
+target-version = ["py310", "py311"]
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.venv
+  | venv
+  | build
+  | dist
+  | node_modules
+  | __pycache__
+)/
+'''
+
+# ------------------------------------------------------------
+# isort import sorter settings
+# ------------------------------------------------------------
+[tool.isort]
+profile = "black"
+line_length = 100
+skip_glob = ["venv/*", ".venv/*", "node_modules/*"]
+
+# ------------------------------------------------------------
+# Pytest settings
+# ------------------------------------------------------------
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+asyncio_mode = "auto"
+
+# ------------------------------------------------------------
+# Mypy type checker settings
+# ------------------------------------------------------------
+[tool.mypy]
+python_version = "3.10"
+ignore_missing_imports = true
+warn_return_any = false
+warn_unused_configs = true
+exclude = ["venv", "node_modules", "dist", "build"]

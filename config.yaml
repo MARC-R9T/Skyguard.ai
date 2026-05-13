@@ -1,0 +1,144 @@
+# ============================================================
+#  SkyGuard AI — Project Configuration
+#  Loaded at runtime by backend modules to centralize all
+#  tunable parameters in one place.
+# ============================================================
+
+project:
+  name: "SkyGuard AI"
+  version: "1.0.0"
+  description: "Integrated Aviation Analytics Platform"
+  author: "Abhishek S."
+
+# ------------------------------------------------------------
+# Paths — all relative to the backend/ directory
+# ------------------------------------------------------------
+paths:
+  data_dir: "data"
+  model_dir: "data"
+  logs_dir: "logs"
+
+  # Local data snapshots
+  cleaned_csv: "data/cleaned_data.csv"
+  opensky_log_csv: "data/opensky_log.csv"
+  adsb_cleaned_csv: "data/adsb_cleaned.csv"
+
+  # Trained model artifacts
+  lstm_model: "data/lstm_model.keras"
+  scaler: "data/scaler.pkl"
+
+  # External delay propagation package
+  delay_root: "../external/delay_propagation/Delay_Propagation"
+  delay_demo_csv: "../external/delay_propagation/Delay_Propagation/aviation_industry_demo_dataset.csv"
+  delay_models_dir: "../external/delay_propagation/Delay_Propagation/models"
+
+# ------------------------------------------------------------
+# OpenSky Network API Settings
+# (Override with environment variables in production)
+# ------------------------------------------------------------
+opensky:
+  url: "https://opensky-network.org/api/states/all"
+  cache_seconds: 30           # Cache TTL for successful responses
+  timeout_seconds: 8          # HTTP request timeout
+  failure_backoff_seconds: 120     # Retry wait after failed request
+  rate_limit_backoff_seconds: 600  # Retry wait after 429 response
+
+# ------------------------------------------------------------
+# Weather API Settings
+# ------------------------------------------------------------
+weather:
+  url: "https://api.weatherapi.com/v1"
+  # Key loaded from SKYGUARD_WEATHER_API_KEY env var
+
+# ------------------------------------------------------------
+# LSTM Trajectory Prediction Model
+# ------------------------------------------------------------
+lstm:
+  sequence_length: 5          # Number of past [lat, lon] points used as input
+  features: ["lat", "lon"]    # Input feature columns
+  units_layer1: 64            # First LSTM layer neuron count
+  units_layer2: 32            # Second LSTM layer neuron count
+  dense_units: 16             # Dense hidden layer size
+  output_size: 2              # Output: predicted [lat, lon]
+  optimizer: "adam"
+  loss: "mse"
+  epochs: 5
+  batch_size: 32
+
+  # Heuristic fallback settings (used when ML is disabled or fails)
+  heuristic_step_minutes: 6      # Time between predicted points (minutes)
+  heuristic_min_speed_kmh: 120.0 # Minimum assumed aircraft speed
+
+# ------------------------------------------------------------
+# Conflict Detection Settings
+# ------------------------------------------------------------
+conflict:
+  threshold_km: 10.0          # Distance below which two flights are in conflict
+  future_steps: 5             # How many future trajectory steps to check
+
+# ------------------------------------------------------------
+# Traffic Analysis Settings
+# ------------------------------------------------------------
+analysis:
+  density_cell_size_degrees: 4.0  # Grid cell size for density computation
+  max_density_cells: 180           # Max density cells to return
+  max_hazard_zones: 10             # Max weather/turbulence zones per type
+
+  # Weather zone score thresholds
+  weather_score_threshold: 0.34
+  turbulence_score_threshold: 0.30
+
+  # Efficiency score weights (must sum to 1.0)
+  efficiency_weights:
+    traffic_flow: 0.35
+    separation: 0.45
+    forecast: 0.20
+
+# ------------------------------------------------------------
+# Delay Propagation Simulation Settings
+# ------------------------------------------------------------
+delay_propagation:
+  mode: "demo"                # Default dataset: "demo" or "full"
+
+  # Heuristic fallback weights (used when ML models are unavailable)
+  heuristic_weights:
+    base_contribution: 0.62
+    propagation_contribution: 0.38
+    historical_average_weight: 0.48
+    congestion_factor: 6.5
+    spill_factor: 0.18
+
+  # Factor weights for heuristic base delay computation
+  base_delay_factors:
+    wind_speed_per_kmh: 0.42   # Extra delay per km/h above 12 km/h
+    precipitation_per_mm: 1.8  # Extra delay per mm of precipitation
+    visibility_loss_divisor: 400.0
+    congestion_multiplier: 18.0
+    turnaround_multiplier: 0.55
+
+# ------------------------------------------------------------
+# FastAPI Backend Settings
+# ------------------------------------------------------------
+api:
+  host: "0.0.0.0"
+  port: 8000
+  reload: true                # Enable hot-reload in development
+  stream_concurrency: 6       # Max simultaneous streaming responses
+  prediction_mode: "hybrid"   # "heuristic" | "ml" | "hybrid"
+
+# ------------------------------------------------------------
+# Frontend / Vite Dev Server Settings
+# ------------------------------------------------------------
+frontend:
+  dev_port: 5173
+  backend_url: "http://localhost:8000"
+  poll_interval_ms: 5000      # How often the globe polls /flights
+
+# ------------------------------------------------------------
+# Logging
+# ------------------------------------------------------------
+logging:
+  level: "INFO"               # DEBUG | INFO | WARNING | ERROR | CRITICAL
+  # Silence uvicorn noise for Windows socket errors
+  uvicorn_error_level: "CRITICAL"
+  uvicorn_access_level: "WARNING"
