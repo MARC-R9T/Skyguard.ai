@@ -73,17 +73,28 @@ secrets.json
 # ------------------------------------------------------------
 # Data Files (large / sensitive — use Git LFS or external storage)
 # ------------------------------------------------------------
+
+# Large backend data files (>5 MB — GitHub limit is 100 MB)
 backend/data/raw_adsb.csv
 backend/data/final_merged.csv
 backend/data/registry_cleaned.csv
 backend/data/basic-ac-db*.json.gz
-# Keep cleaned/demo files (they are small and needed for dev)
-# backend/data/adsb_cleaned.csv   <- keep
-# backend/data/cleaned_data.csv   <- keep
-# backend/data/opensky_log.csv    <- keep
 
-# External large dataset
+# ACAS data directory (contains large gzipped CSVs)
+backend/data/acas/
+
+# External delay propagation — large training datasets
+external/delay_propagation/Delay_Propagation/data/*.parquet
 external/delay_propagation/Delay_Propagation/data/full_processed.parquet
+external/delay_propagation/Delay_Propagation/data/train.parquet
+external/delay_propagation/Delay_Propagation/data/test.parquet
+external/delay_propagation/Delay_Propagation/india_aviation_flights_2025.csv
+
+# Keep these smaller files (needed for dev/demo)
+# backend/data/adsb_cleaned.csv        (~2.5 MB) <- keep
+# backend/data/cleaned_data.csv        (~64 KB)  <- keep
+# backend/data/opensky_log.csv         (~586 KB) <- keep
+# external/.../aviation_industry_demo_dataset.csv <- keep
 
 # ------------------------------------------------------------
 # ML Model Weights (use Git LFS or DVC for large models)

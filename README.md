@@ -27,6 +27,7 @@
 - [Abstract](#-abstract)
 - [Architecture](#-system-architecture)
 - [Features](#-features)
+- [Screenshots](#-screenshots)
 - [Tech Stack](#-tech-stack)
 - [Installation](#-installation)
 - [Usage](#-usage)
@@ -121,6 +122,23 @@ This project was developed as a capstone for the **AI in Transportation & Logist
 | 🔁 **Resilient Data Fetching** | Automatic backoff, caching, and local CSV fallback on API rate limiting |
 | 📈 **Streamlit Analytics Dashboard** | Plotly charts, KPI metrics, flight trajectory replay |
 | 🔌 **FastAPI REST Backend** | Streaming JSON responses for low-latency frontend polling |
+
+---
+
+## 📸 Screenshots
+
+| Live 3D Dashboard | Analytics & Intelligence |
+|:---:|:---:|
+| <img src="docs/screenshots/01_dashboard.png" width="400"/> | <img src="docs/screenshots/02_analytics.png" width="400"/> |
+
+| Conflict Detection | Delay Propagation |
+|:---:|:---:|
+| <img src="docs/screenshots/03_conflicts.png" width="400"/> | <img src="docs/screenshots/04_delays.png" width="400"/> |
+
+<div align="center">
+  <b>Hazard Alerts & Environment Filtering</b><br/>
+  <img src="docs/screenshots/05_hazards.png" width="600"/>
+</div>
 
 ---
 
